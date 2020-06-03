@@ -42,6 +42,8 @@ public class CategoryService {
         category.setId(id);
         categoryMapper.deleteByPrimaryKey(category);
     }
-
-
+    //根据分类id查询分类名称
+    public Category findCategoryById(Long id) {
+       return categoryMapper.selectByPrimaryKey(id);
+    }
 }

@@ -12,20 +12,23 @@ public class PageResult<T> {
     //数据
     private List<T> items;
 
-    public PageResult(Long total, List<T> items, Integer totlePage) {
+
+
+    public PageResult(Long total, List<T> items, Integer totalPage) {
         this.total = total;
         this.items = items;
-        this.totlePage = totlePage;
+        this.totalPage = totalPage;
     }
 
-    private Integer totlePage;
+    private Integer totalPage;
 
-    public Integer getTotlePage() {
-        return totlePage;
+
+    public Integer getTotalPage() {
+        return totalPage;
     }
 
-    public void setTotlePage(Integer totlePage) {
-        this.totlePage = totlePage;
+    public void setTotalPage(Integer totalPage) {
+        this.totalPage = totalPage;
     }
 
     public PageResult(Long total) {

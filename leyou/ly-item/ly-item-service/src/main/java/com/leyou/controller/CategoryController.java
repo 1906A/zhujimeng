@@ -78,4 +78,13 @@ public class CategoryController {
         return result;
     }
 
+    //根据分类id查询分类名称
+    @RequestMapping("findCategoryById")
+    public Category findCategoryById(@RequestParam("id") Long id){
+       return categoryService.findCategoryById(id);
+    }
+
+
+
+
 }

@@ -100,4 +100,8 @@ public class BrandService {
     public List<Brand> findBrandBycid(Long cid) {
        return brandMapper.findBrandBycid(cid);
     }
+    //根据品牌id查询品牌对象
+    public Brand findBrandById(Long id) {
+        return brandMapper.selectByPrimaryKey(id);
+    }
 }
