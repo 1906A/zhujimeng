@@ -235,7 +235,8 @@ public class SpuService {
 
     }
 
-
-
-
+    //根据spuid查询spu
+    public Spu findSpuById(Long spuId) {
+       return spuMapper.selectByPrimaryKey(spuId);
+    }
 }

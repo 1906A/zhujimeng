@@ -1,6 +1,7 @@
 package com.leyou.controller;
 
 import com.leyou.common.PageResult;
+import com.leyou.pojo.Spu;
 import com.leyou.pojo.SpuDetail;
 import com.leyou.pojo.vo.SpuVo;
 import com.leyou.service.SpuService;
@@ -63,5 +64,10 @@ public class SpuController {
         spuService.upOrDown(spuId,saleable);
     }
 
+    //根据spuid查询spu
+    @RequestMapping("findSpuById")
+    public Spu findSpuById(@RequestParam("spuId") Long spuId){
+        return spuService.findSpuById(spuId);
+    }
 
 }

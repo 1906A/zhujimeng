@@ -14,4 +14,5 @@ import java.util.List;
 public interface SpecClientServer {
     @RequestMapping("paramsByCid")
     public List<SpecParam> findSpecParamByCidAndSearching(@RequestParam("cid") Long cid);
+
 }
