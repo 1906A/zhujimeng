@@ -5,6 +5,7 @@ import com.leyou.pojo.Category;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -45,5 +46,13 @@ public class CategoryService {
     //根据分类id查询分类名称
     public Category findCategoryById(Long id) {
        return categoryMapper.selectByPrimaryKey(id);
+    }
+    //根据分类id查询分类名称
+    public List<Category> findCategoryByCids(List<Long> ids) {
+        List<Category> categoryList = new ArrayList<>();
+        ids.forEach(cid->{
+            categoryList.add(categoryMapper.selectByPrimaryKey(cid));
+        });
+        return categoryList;
     }
 }

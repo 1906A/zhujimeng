@@ -15,4 +15,6 @@ public interface SpecClientServer {
     @RequestMapping("paramsByCid")
     public List<SpecParam> findSpecParamByCidAndSearching(@RequestParam("cid") Long cid);
 
+    @RequestMapping("paramsByCidGeneric")
+    public List<SpecParam> findParamsByCidGeneric(@RequestParam("cid") Long cid,@RequestParam("generic") boolean generic);
 }
