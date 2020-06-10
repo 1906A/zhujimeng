@@ -2,6 +2,7 @@ package com.leyou.controller;
 
 import com.leyou.client.*;
 import com.leyou.pojo.*;
+import com.leyou.service.GoodService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,28 +27,31 @@ import java.util.Map;
  */
 @Controller
 public class GoodsDetailController {
-
-   @Autowired
-   SpuClient spuClient;
-
-    @Autowired
-    SkuClient skuClient;
-
-    @Autowired
-    SpecGroupClient specGroupClient;
-
-    @Autowired
-    CategoryClient categoryClient;
-
-    @Autowired
-    SpecClient specClient;
-
-    @Autowired
-    BrandClient brandClient;
-
+//
+//    @Autowired
+//    SpuClient spuClient;
+//
+//    @Autowired
+//    SkuClient skuClient;
+//
+//    @Autowired
+//    SpecGroupClient specGroupClient;
+//
+//    @Autowired
+//    CategoryClient categoryClient;
+//
+//    @Autowired
+//    SpecClient specClient;
+//
+//    @Autowired
+//    BrandClient brandClient;
+//
     @Autowired
     TemplateEngine templateEngine;
 
+
+    @Autowired
+    GoodService goodService;
 
     @RequestMapping("hello")
     public String hello(Model model){
@@ -74,6 +78,7 @@ public class GoodsDetailController {
     public String item(@PathVariable("spuId") Long spuId,Model model){
 
 
+/*
 
         //1.spu
         Spu spu = spuClient.findSpuById(spuId);
@@ -114,19 +119,23 @@ public class GoodsDetailController {
         model.addAttribute("skuList",skuList);
         model.addAttribute("groups",groups);
         model.addAttribute("paramMap",paramMap);
+*/
+
+
+        Map<String, Object> map = goodService.item(spuId);
+        model.addAllAttributes(map);
 
 
         //写入静态文件
-        creatHtml(spu,spuDetail,categoryList,brand,skuList,groups,paramMap);
+        goodService.creatHtml(spuId);
 
-
-
+        //creatHtml(spu,spuDetail,categoryList,brand,skuList,groups,paramMap);
 
         return "item";
     }
 
-    //实现页面静态化
-    private void creatHtml(Spu spu, SpuDetail spuDetail, List<Category> categoryList, Brand brand, List<Sku> skuList, List<SpecGroup> groups, Map<Long, String> paramMap) {
+    /*//实现页面静态化
+    public void creatHtml(Spu spu, SpuDetail spuDetail, List<Category> categoryList, Brand brand, List<Sku> skuList, List<SpecGroup> groups, Map<Long, String> paramMap) {
 
 
         PrintWriter writer = null;
@@ -162,13 +171,13 @@ public class GoodsDetailController {
             }
         }
 
-
-
-
-
-
-
     }
+*/
+
+
+
+
+
 
 
 }

@@ -10,6 +10,7 @@ import com.leyou.pojo.Sku;
 import com.leyou.pojo.SpecParam;
 import com.leyou.pojo.SpuDetail;
 import com.leyou.pojo.vo.SpuVo;
+import com.leyou.repository.GoodsRepository;
 import org.apache.commons.lang.math.NumberUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -39,7 +40,8 @@ public class GoodsService {
     @Autowired
     private SpuClient spuClient;
 
-
+    @Autowired
+    private GoodsRepository goodsRepository;
 
     public Goods convert(SpuVo spuVo) throws Exception {
         Goods goods = new Goods();
@@ -148,5 +150,25 @@ public class GoodsService {
         }
         return result;
     }
+    //RabbitMQ监听消息
+    public void editEsData(Long spuId) throws Exception {
+        //1.根据SpuId查询spu
+        SpuVo spuVo = spuClient.findSpuBySpuId(spuId);
 
+
+        //2.spu转换成goods
+
+        Goods goods = this.convert(spuVo);
+
+
+        //3.持久化到ES
+        goodsRepository.save(goods);
+
+
+
+    }
+
+    public void deleteEsData(Long spuId) {
+        goodsRepository.deleteById(spuId);
+    }
 }
