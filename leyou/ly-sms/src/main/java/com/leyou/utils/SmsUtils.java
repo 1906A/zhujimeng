@@ -29,7 +29,7 @@ public class SmsUtils {
         request.putBodyParameter("PhoneNumbers",phone);
         request.putBodyParameter("SignName","乐优商城");
         request.putBodyParameter("TemplateCode","SMS_192831469");
-        request.putBodyParameter("TemplateParam","{\"code\":\""+code+"\"}");
+        request.putBodyParameter("TemplateParam","{\"code\":\""+code+"\"}");//${code}
         try {
             CommonResponse response = client.getCommonResponse(request);
             System.out.println(response.getData());

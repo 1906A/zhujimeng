@@ -2,6 +2,7 @@ package com.leyou;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import tk.mybatis.spring.annotation.MapperScan;
 
 /**
@@ -9,7 +10,7 @@ import tk.mybatis.spring.annotation.MapperScan;
  * @date 2020/6/15 - 15:08
  */
 @SpringBootApplication
-//@EnableEurekaClient
+@EnableEurekaClient
 @MapperScan("com.leyou.dao")
 public class LyUserService {
     public static void main(String[] args) {

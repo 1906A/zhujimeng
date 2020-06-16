@@ -2,8 +2,15 @@ package com.leyou.controller;
 
 import com.leyou.pojo.User;
 import com.leyou.service.UserService;
+import com.leyou.utils.CodeUtils;
+import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author zhu
@@ -15,6 +22,11 @@ public class UserController {
     @Autowired
     UserService userService;
 
+    @Autowired
+    AmqpTemplate amqpTemplate;
+
+    @Autowired
+    StringRedisTemplate stringRedisTemplate;
 
      //实现用户数据的校验，主要包括对：手机号、用户名的唯一性校验。
      @GetMapping("/check/{data}/{type}")
@@ -27,14 +39,19 @@ public class UserController {
      public void code(@RequestParam("phone") String phone){
          System.out.println("Code"+phone);
 
-         //1.生成一个六位数的随机码    code
+         //1.生成一个六位数的随机码     code
+        String code = CodeUtils.messageCode(6);
 
 
-         //2.调用短信服务发送验证码    phone,code
+         //2.使用rabbitMQ发送短信    phone,code
+         Map<String,String> map = new HashMap<>();
+         map.put("phone",phone);
+         map.put("code",code);
+            amqpTemplate.convertAndSend("sms.changes","sms.send",map);
 
-
-         //3.
-
+         //3.发送短信后存放redis
+         //验证码  code
+         stringRedisTemplate.opsForValue().set("lysms_"+phone,code,5, TimeUnit.MINUTES);//放入redis中的有效期为五分钟
 
 
      }
