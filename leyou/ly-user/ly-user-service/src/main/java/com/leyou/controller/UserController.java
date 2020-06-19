@@ -3,11 +3,13 @@ package com.leyou.controller;
 import com.leyou.pojo.User;
 import com.leyou.service.UserService;
 import com.leyou.utils.CodeUtils;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -47,18 +49,29 @@ public class UserController {
          Map<String,String> map = new HashMap<>();
          map.put("phone",phone);
          map.put("code",code);
-            amqpTemplate.convertAndSend("sms.changes","sms.send",map);
+        //amqpTemplate.convertAndSend("sms.changes","sms.send",map);
 
          //3.发送短信后存放redis
          //验证码  code
-         stringRedisTemplate.opsForValue().set("lysms_"+phone,code,5, TimeUnit.MINUTES);//放入redis中的有效期为五分钟
+         stringRedisTemplate.opsForValue().set("lysms_"+phone,code,55, TimeUnit.MINUTES);//放入redis中的有效期为五分钟
 
 
      }
     //用户注册
      @PostMapping("/register")
-     public void register(User user,String code){
+     public void register(@Valid User user, String code){
          System.out.println("用户注册："+user.getUsername()+"Code="+code);
+
+         if (user!=null) {
+
+             //1.判断code验证码是否一致
+             String redisCode = stringRedisTemplate.opsForValue().get("lysms_" + user.getPhone());
+             //2.判断code验证码是否一致
+             if (redisCode.equals(code)){
+                 userService.insertUser(user);
+             }
+         }
+
      }
     //根据用户名和密码查询用户
      @GetMapping("/query")
@@ -66,4 +79,26 @@ public class UserController {
          System.out.println("用户注册：username"+username+"密码="+password);
          return new User();
      }
+
+
+     @PostMapping("login")
+     public String login(@RequestParam("username")String username,@RequestParam("password")String password){
+         String result = "1";
+        //根据用户名查询用户信息
+        User user = userService.findUser(username);
+        if (user!=null){
+            //对比密码
+            String newPwd = DigestUtils.md5Hex(password + user.getSalt());
+            if (newPwd.equals(user.getPassword())){
+                result = "0";
+            }
+        }
+
+
+        return result;
+     }
+
+
+
+
 }
