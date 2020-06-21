@@ -1,7 +1,6 @@
 package com.leyou.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
 
 import java.util.List;
 
@@ -9,7 +8,7 @@ import java.util.List;
  * @author zhu
  * @date 2020/6/18 - 18:37
  */
-@Configuration
+/*@Configuration*/
 @ConfigurationProperties(prefix = "leyou.filter")
 public class FilterProperties {
 
